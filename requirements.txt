@@ -8,3 +8,4 @@ pandas      # Most likely used for data handling
 numpy       # Required by LightGBM and general ML work
 seaborn
 plotly
+xgboost
