@@ -6,3 +6,4 @@ streamlit-option-menu
 matplotlib  # In case you use plots
 pandas      # Most likely used for data handling
 numpy       # Required by LightGBM and general ML work
+seaborn

@@ -6,7 +6,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.tree import DecisionTreeRegressor
-import joblib
+
 
 # Load dataset
 df = pd.read_csv('source_model\tree_regressor.py')
