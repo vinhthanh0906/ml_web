@@ -126,15 +126,6 @@ if page == "📊 Data Preview":
 
 
 
-
-
-
-
-
-
-
-
-
 if page == "📅 Time Forecasting":
 
     #Time Forecasting System
