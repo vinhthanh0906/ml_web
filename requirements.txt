@@ -9,3 +9,4 @@ numpy       # Required by LightGBM and general ML work
 seaborn
 plotly
 xgboost
+joblib

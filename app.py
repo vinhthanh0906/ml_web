@@ -18,7 +18,7 @@ from mlxtend.frequent_patterns import apriori, association_rules
 #UI
 import streamlit as st
 from streamlit_option_menu import option_menu
-
+import joblib
 
 
 
