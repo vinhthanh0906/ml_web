@@ -1,0 +1,3 @@
+model/*.pkl
+data/*.csv
+source_model/*.py
