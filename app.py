@@ -8,8 +8,6 @@ from datetime import datetime
 #Plotting
 import matplotlib.pyplot as plt
 import seaborn as sns
-import plotly.graph_objects as go
-
 
 #Model
 import xgboost as xgb
