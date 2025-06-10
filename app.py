@@ -270,14 +270,7 @@ if page == "💊 Supplement Recommendation":
 if page == "📦 Revenue Prediction":
     st.title("Supplement Revenue Predictor")
 
-    model_options = {
-        "Linear Regression": "linear_regression_model.pkl",
-        "Decision Tree": "decision_tree_model.pkl",
-        "XGBoost": "xgb.pkl"
-    }
-
-    selected_model_name = st.selectbox("Select a prediction model", list(model_options.keys()))
-    model_path = f"model/{model_options[selected_model_name]}"
+    model_path = "model/xsgboost_model.pkl"
 
     # Safe model loading
     try:
@@ -328,7 +321,7 @@ if page == "📦 Revenue Prediction":
     if st.button("Predict Revenue"):
         try:
             prediction = model.predict(input_df)[0]
-            st.success(f"Predicted Revenue ({selected_model_name}): ${prediction:.2f}")
+            st.success(f"Predicted Revenue (XGBoost): ${prediction:.2f}")
 
             if not match.empty:
                 avg_actual_revenue = match['Revenue'].mean()
