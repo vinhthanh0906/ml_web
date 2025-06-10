@@ -269,7 +269,7 @@ if page == "💊 Supplement Recommendation":
 
 if page == "📦 Revenue Prediction":
     st.title("Supplement Revenue Predictor")
-    
+
     model_options = {
         "Linear Regression": "linear_regression_model.pkl",
         "Decision Tree": "decision_tree_model.pkl",
@@ -278,7 +278,13 @@ if page == "📦 Revenue Prediction":
 
     selected_model_name = st.selectbox("Select a prediction model", list(model_options.keys()))
     model_path = f"model/{model_options[selected_model_name]}"
-    model = joblib.load(model_path)
+
+    # Safe model loading
+    try:
+        model = joblib.load(model_path)
+    except Exception as e:
+        st.error(f"Failed to load model: {e}")
+        st.stop()
 
     selected_date = st.date_input("Choose a date", datetime.today())
     day_of_week = selected_date.weekday()
@@ -288,7 +294,6 @@ if page == "📦 Revenue Prediction":
     selected_category = st.selectbox("Select Supplement Category", raw_df['Category'].unique())
     selected_location = st.selectbox("Select Location", raw_df['Location'].unique())
     selected_platform = st.selectbox("Select Platform", raw_df['Platform'].unique())
-
 
     match = raw_df[
         (raw_df['Category'] == selected_category) &
@@ -302,10 +307,9 @@ if page == "📦 Revenue Prediction":
         units_returned = match['Units Returned'].mean()
     else:
         st.warning("No matching historical data found — using default values.")
-        price = 0
+        price = 50  # Sensible default
         discount = 0
         units_returned = 0
-
 
     input_data = {
         'day_of_week': [day_of_week],
@@ -321,28 +325,25 @@ if page == "📦 Revenue Prediction":
 
     input_df = pd.DataFrame(input_data)
 
-
     if st.button("Predict Revenue"):
-        prediction = model.predict(input_df)[0]
-        st.success(f"Predicted Revenue ({selected_model_name}): ${prediction:.2f}")
+        try:
+            prediction = model.predict(input_df)[0]
+            st.success(f"Predicted Revenue ({selected_model_name}): ${prediction:.2f}")
 
+            if not match.empty:
+                avg_actual_revenue = match['Revenue'].mean()
 
-        historical_data = match.copy()
-        
-        if not historical_data.empty:
-            avg_actual_revenue = historical_data['Revenue'].mean()
+                fig, ax = plt.subplots()
+                bars = ax.bar(['Predicted Revenue'], [prediction], color=['skyblue'])
+                ax.set_ylabel("Revenue")
+                ax.set_title("Predicted Average Revenue")
 
-       
-            fig, ax = plt.subplots()
-            bars = ax.bar(['Actual Avg Revenue', 'Predicted Revenue'], [avg_actual_revenue, prediction], color=['skyblue', 'orange'])
-            ax.set_ylabel("Revenue")
-            ax.set_title("Predicted vs. Actual Average Revenue")
+                for bar in bars:
+                    yval = bar.get_height()
+                    ax.text(bar.get_x() + bar.get_width() / 2.0, yval + 0.5, f"${yval:.2f}", ha='center', va='bottom')
 
-
-            for bar in bars:
-                yval = bar.get_height()
-                ax.text(bar.get_x() + bar.get_width() / 2.0, yval + 0.5, f"${yval:.2f}", ha='center', va='bottom')
-
-            st.pyplot(fig)
-        else:
-            st.info("No historical revenue data available to plot comparison.")
+                st.pyplot(fig)
+            else:
+                st.info("No historical revenue data available to plot comparison.")
+        except Exception as e:
+            st.error(f"Prediction failed: {e}")
