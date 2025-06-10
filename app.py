@@ -270,7 +270,7 @@ if page == "💊 Supplement Recommendation":
 if page == "📦 Revenue Prediction":
     st.title("Supplement Revenue Predictor")
 
-    model_path = "C:\Users\PC\Desktop\ml_web\model\xgboost_model.pkl"
+    model_path = "xgboost_model.pkl"
 
     # Safe model loading
     try:
