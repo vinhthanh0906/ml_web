@@ -23,7 +23,7 @@ import joblib
 
 
 
-#Sidebar Design
+#Sidebar Design yo
 
 with st.sidebar:
     page = option_menu(
